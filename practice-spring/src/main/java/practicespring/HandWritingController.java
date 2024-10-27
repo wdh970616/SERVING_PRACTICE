@@ -2,8 +2,9 @@ package practicespring;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import practicespring.dto.RequestDTO;
+import org.springframework.web.multipart.MultipartFile;
 import practicespring.dto.ResponseDTO;
 
 @RestController
@@ -20,14 +21,13 @@ public class HandWritingController {
         return "test success";
     }
 
-    @PostMapping("/webclient")
-    public ResponseDTO handwritingByWebClient(@RequestBody RequestDTO requestDTO) {
+    @PostMapping(value = "/webclient",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseDTO handwritingByWebClient(@RequestParam("handwriting") MultipartFile handwriting) {
 
         log.info("손글씨 변환 Controller 요청 들어옴");
-        log.info("handwriting: {}", requestDTO.getHandWriting());
+        log.info("handwriting: {}", handwriting.getOriginalFilename());
 
-        ResponseDTO generated_text = webClientService.handwritingToText(requestDTO);
-
-        return generated_text;
+        return webClientService.handwritingToText(handwriting);
     }
 }

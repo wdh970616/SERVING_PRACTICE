@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from practice.routers import handwriting
+from routers import handwriting
 
 app = FastAPI()
 

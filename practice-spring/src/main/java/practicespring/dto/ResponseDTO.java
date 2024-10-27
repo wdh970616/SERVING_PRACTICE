@@ -9,5 +9,5 @@ import lombok.*;
 @ToString
 public class ResponseDTO {
 
-    private String generated_text;
+    private String generatedText;
 }

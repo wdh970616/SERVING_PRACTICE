@@ -1,9 +1,11 @@
 package practicespring;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
-import practicespring.dto.RequestDTO;
 import practicespring.dto.ResponseDTO;
 
 @Service
@@ -21,10 +23,11 @@ public class WebClientService {
                 .build();
     }
 
-    public ResponseDTO handwritingToText(RequestDTO requestDTO) {
+    public ResponseDTO handwritingToText(MultipartFile handWriting) {
         ResponseDTO responseDTO = webClient.post()
                 .uri("/handwriting")
-                .bodyValue(requestDTO)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .body(BodyInserters.fromMultipartData("handwriting", handWriting.getResource()))
                 .retrieve()
                 .bodyToMono(ResponseDTO.class)
                 .doOnSuccess(response -> log.info("변환 완료"))
